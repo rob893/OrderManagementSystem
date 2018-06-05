@@ -66,7 +66,7 @@ $sqlBuyersResults = $conn->query($sqlBuyers);
 
 <p></p>
 <h2>Saved Buyers</h2>
-<table class='table table-striped'>
+<table class='table table-striped table-responsive'>
 	<thead>
 		<tr>
 			<th>Name</th>

@@ -68,7 +68,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 
 
 <h2>Completed Orders</h2>
-<table class='table table-striped'>
+<table class='table table-striped table-responsive'>
 	<thead>
 		<tr>
 			<th>Buyer Name</th>

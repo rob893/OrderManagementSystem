@@ -72,7 +72,7 @@ $sqlServicesResults = $conn->query($sqlService);
 
 <p></p>
 <h2>Currently Offered Services</h2>
-<table class='table table-striped'>
+<table class='table table-striped table-responsive'>
 	<thead>
 		<tr>
 			<th>Service</th>
@@ -87,7 +87,7 @@ $sqlServicesResults = $conn->query($sqlService);
 				echo "
 					<tr>
 						<td>".$row["serviceName"]."</td>
-						<td>".$row["serviceCost"]."</td>
+						<td>".number_format($row["serviceCost"])."</td>
 						<td>
 							<form action='#' method='post'>
 								<button type='submit' class='btn btn-danger' name ='delete' value='".$row['id']."'>Delete</button>

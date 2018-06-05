@@ -115,7 +115,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 
 ?>
 <h2>Currently Open Orders</h2>
-<table class='table table-striped'>
+<table class='table table-striped table-responsive'>
 	<thead>
 		<tr>
 			<th>Buyer Name</th>
@@ -172,6 +172,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 			echo "
 				<tr>
 					<td><b>Total Amount Due:</b></td>
+					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>

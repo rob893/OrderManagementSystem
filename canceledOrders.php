@@ -82,7 +82,7 @@ $sqlCanceledResults = $conn->query($sqlCanceledOrders);
 
 
 <h2>Canceled Orders</h2>
-<table class='table table-striped'>
+<table class='table table-striped table-responsive'>
 	<thead>
 		<tr>
 			<th>Buyer Name</th>
