@@ -21,23 +21,27 @@ if(isset($_POST['addBuyer'])){
 	
 	//The following takes the POST data and 'filters' it before inserting into the database to prevent SQL injection attacks. 
 	//All user input should be 'filtered' before inserting into the database.
-	
-	$buyerName = strip_tags($_POST['name']);
-	
-	$buyerName = stripslashes($buyerName);
+	if(empty(trim($_POST['name']))){
+		echo "<script type='text/javascript'>alert('Invalid name!')</script>";
+	} 
+	else{
+		$buyerName = strip_tags($_POST['name']);
+		
+		$buyerName = stripslashes($buyerName);
 
-    $buyerName = mysqli_real_escape_string($conn, $buyerName);
+		$buyerName = mysqli_real_escape_string($conn, $buyerName);
 
-	$sqlInsert = $conn->prepare("INSERT INTO buyers(buyerName) VALUES(?)");
-	$sqlInsert->bind_param('s', $buyerName);
-	//End 'filtering'
-	
-	if($sqlInsert->execute() === true){
-		echo "<script type='text/javascript'>alert('".$buyerName." has been added to the database!')</script>";
-		$sqlInsert->close();
-	} else {
-		echo "<script type='text/javascript'>alert('Error: ".$sqlInsert->error."')</script>";
-		$sqlInsert->close();
+		$sqlInsert = $conn->prepare("INSERT INTO buyers(buyerName) VALUES(?)");
+		$sqlInsert->bind_param('s', $buyerName);
+		//End 'filtering'
+		
+		if($sqlInsert->execute() === true){
+			echo "<script type='text/javascript'>alert('".$buyerName." has been added to the database!')</script>";
+			$sqlInsert->close();
+		} else {
+			echo "<script type='text/javascript'>alert('Error: ".$sqlInsert->error."')</script>";
+			$sqlInsert->close();
+		}
 	}
 }
 

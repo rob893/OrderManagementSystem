@@ -34,7 +34,7 @@ $sqlBuyersResults = $conn->query($sqlBuyers);
 	<div class='row'>
 		<div class="form-group col-sm-2">
 			<label for="service">Service:</label>
-			<select class='form-control' id='service' name='service'>
+			<select class='form-control' id='service' name='service' required>
 				<?php
 				while($row = $sqlServicesResults->fetch_assoc()){
 					$serviceName = $row['serviceName'];
@@ -51,7 +51,7 @@ $sqlBuyersResults = $conn->query($sqlBuyers);
 	<div class='row'>
 		<div class='form-group col-sm-2'>
 			<label for="buyer">Buyer:</label>
-			<select class='form-control' id='buyer' name='buyer'>
+			<select class='form-control' id='buyer' name='buyer' required>
 				<?php
 				while($row = $sqlBuyersResults->fetch_assoc()){
 					$buyerName = $row['buyerName'];

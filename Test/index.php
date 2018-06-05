@@ -158,7 +158,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 							<form action='#' method='post'>
 								<input type='hidden' class='form-control' name='amountPaid' id='amountPaid' value='".$row['amountPaid']."'>
 								<input type='hidden' class='form-control' name='serviceCost' id='serviceCost' value='".$row['serviceCost']."'>
-								<input type='number' class='col-sm-4' name='amount' id='amount' placeholder='Amount' required>
+								<input type='number' min='-100000000' max='100000000' onkeydown='javascript: return event.keyCode !== 69' class='col-sm-4' name='amount' id='amount' placeholder='Amount' required>
 								<button type='submit' class='btn btn-info' name ='partialPayment' value='".$row['id']."'>Apply Payment</button>
 							</form>
 						</td>

@@ -21,26 +21,30 @@ if(isset($_POST['addService'])){
 	
 	//The following takes the POST data and 'filters' it before inserting into the database to prevent SQL injection attacks. 
 	//All user input should be 'filtered' before inserting into the database.
-	
-	$serviceName = strip_tags($_POST['name']);
-	$serviceCost = strip_tags($_POST['cost']);
-	
-	$serviceName = stripslashes($serviceName);
-	$serviceCost = stripslashes($serviceCost);
+	if(empty(trim($_POST['name']))){
+		echo "<script type='text/javascript'>alert('Invalid name!')</script>";
+	} 
+	else{
+		$serviceName = strip_tags($_POST['name']);
+		$serviceCost = strip_tags($_POST['cost']);
+		
+		$serviceName = stripslashes($serviceName);
+		$serviceCost = stripslashes($serviceCost);
 
-    $serviceName = mysqli_real_escape_string($conn, $serviceName);
-	$serviceCost = mysqli_real_escape_string($conn, $serviceCost);
+		$serviceName = mysqli_real_escape_string($conn, $serviceName);
+		$serviceCost = mysqli_real_escape_string($conn, $serviceCost);
 
-	$sqlInsert = $conn->prepare("INSERT INTO services(serviceCost, serviceName) VALUES(?, ?)");
-	$sqlInsert->bind_param('is', $serviceCost, $serviceName);
-	//End 'filtering'
-	
-	if($sqlInsert->execute() === true){
-		echo "<script type='text/javascript'>alert('".$serviceName." has been added to the database!')</script>";
-		$sqlInsert->close();
-	} else {
-		echo "<script type='text/javascript'>alert('Error: ".$sqlInsert->error."')</script>";
-		$sqlInsert->close();
+		$sqlInsert = $conn->prepare("INSERT INTO services(serviceCost, serviceName) VALUES(?, ?)");
+		$sqlInsert->bind_param('is', $serviceCost, $serviceName);
+		//End 'filtering'
+		
+		if($sqlInsert->execute() === true){
+			echo "<script type='text/javascript'>alert('".$serviceName." has been added to the database!')</script>";
+			$sqlInsert->close();
+		} else {
+			echo "<script type='text/javascript'>alert('Error: ".$sqlInsert->error."')</script>";
+			$sqlInsert->close();
+		}
 	}
 }
 
@@ -61,7 +65,7 @@ $sqlServicesResults = $conn->query($sqlService);
 					<label for='name'>Service Name:</label>
 					<input type='text' class='form-control' name='name' id='name' placeholder='Name' required>
 					<label for='cost'>Service Cost:</label>
-					<input type='number' class='form-control' name='cost' id='cost' placeholder='Cost' required>
+					<input type='number' min='0' max='100000000' onkeydown='javascript: return event.keyCode !== 69' class='form-control' name='cost' id='cost' placeholder='Cost' required>
 					<br>
 					<button type='submit' class='btn btn-info' name ='addService'>Submit</button>
 				</div>

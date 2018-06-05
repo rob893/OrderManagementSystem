@@ -119,7 +119,7 @@ $sqlCanceledResults = $conn->query($sqlCanceledOrders);
 						</td>
 						<td>
 							<form action='#' method='post'>
-								<input type='number' class='col-sm-4' name='amount' id='amount' placeholder='Amount' required>
+								<input type='number' min='0' max='100000000' onkeydown='javascript: return event.keyCode !== 69' class='col-sm-4' name='amount' id='amount' placeholder='Amount' required>
 								<button type='submit' class='btn btn-danger' name ='reopenCanceled' value='".$row['id']."'>Reopen</button>
 							</form>
 						</td>

@@ -21,15 +21,25 @@ require_once('dbconnection.php');
 		<title>Carry Manager</title>
 	</head>
 	<body>
-		<div class="jumbotron">
-			<h1>Carry Manager</h1>
-			<a href="index.php" class='btn btn-info' role='button'>Open Orders</a>
-			<a href="completedOrders.php" class='btn btn-info' role='button'>Completed Orders</a>
-			<a href="canceledOrders.php" class='btn btn-info' role='button'>Canceled Orders</a>
-			<a href="services.php" class='btn btn-info' role='button'>Add Service</a>
-			<a href="addOrder.php" class='btn btn-info' role='button'>Add Order</a>
-			<a href="addBuyer.php" class='btn btn-info' role='button'>Add Buyer</a>
-			<br>
-		</div>
-		
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class='navbar-brand' href='index.php'>
+				<img src="guildLogo.JPG" width="30" height="30" class="d-inline-block align-top" alt="">
+				Carry Manager
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<a href="index.php" class='nav-item nav-link'>Open Orders</a>
+					<a href="completedOrders.php" class='nav-item nav-link'>Completed Orders</a>
+					<a href="canceledOrders.php" class='nav-item nav-link'>Canceled Orders</a>
+					<a href="services.php" class='nav-item nav-link'>Add Service</a>
+					<a href="addBuyer.php" class='nav-item nav-link'>Add Buyer</a>
+					<a href="addOrder.php" class='nav-item nav-link'>Add Order</a>
+				</div>
+			</div>
+		</nav>
+		<br>
+		<br>
 		<div class="container-fluid">
