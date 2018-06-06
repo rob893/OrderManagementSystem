@@ -127,6 +127,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 			<th>Amount Due</th>
 			<th>Paid in Full</th>
 			<th>Partial Payment</th>
+			<th>Manage Group</th>
 			<th>Cancel</th>
 		</tr>
 	</thead>
@@ -167,6 +168,13 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 							</form>
 						</td>
 						<td>
+							<form action='manageRaidersForOrder.php' method='get'>
+                                <input type='hidden' name='date' id='date' value='".$date."'>
+                                <input type='hidden' name='time' id='time' value='".$time."'>
+								<button type='submit' class='btn btn-info' name ='orderId' value='".$row['id']."'>Manage Group</button>
+							</form>
+						</td>
+						<td>
 							<form action='#' method='post'>
 								<button type='submit' class='btn btn-danger' name ='cancel' value='".$row['id']."'>Cancel</button>
 							</form>
@@ -182,6 +190,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 					<td><b>".number_format($totalServiceCost)."</b></td>
 					<td class='text-success'><b>".number_format($totalAmountPaid)."</b></td>
 					<td class='text-danger'><b>".number_format($totalAmountOwed)."</b></td>
+					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>

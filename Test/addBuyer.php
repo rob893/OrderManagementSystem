@@ -25,18 +25,18 @@ if(isset($_POST['addBuyer'])){
 		echo "<script type='text/javascript'>alert('Invalid name!')</script>";
 	} 
 	else{
-		$buyerName = strip_tags($_POST['name']);
+		$$raiderName = strip_tags($_POST['name']);
 		
-		$buyerName = stripslashes($buyerName);
+		$$raiderName = stripslashes($$raiderName);
 
-		$buyerName = mysqli_real_escape_string($conn, $buyerName);
+		$$raiderName = mysqli_real_escape_string($conn, $$raiderName);
 
 		$sqlInsert = $conn->prepare("INSERT INTO buyers(buyerName) VALUES(?)");
-		$sqlInsert->bind_param('s', $buyerName);
+		$sqlInsert->bind_param('s', $$raiderName);
 		//End 'filtering'
 		
 		if($sqlInsert->execute() === true){
-			echo "<script type='text/javascript'>alert('".$buyerName." has been added to the database!')</script>";
+			echo "<script type='text/javascript'>alert('".$$raiderName." has been added to the database!')</script>";
 			$sqlInsert->close();
 		} else {
 			echo "<script type='text/javascript'>alert('Error: ".$sqlInsert->error."')</script>";
