@@ -85,20 +85,24 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 	<tbody>
 		<?php
 			$totalAmountMade = 0;
+			$totalAmountOwed = 0;
+			$totalServiceCost = 0;
 			while($row = $sqlOrdersResults->fetch_assoc()){
 				list($date, $time) = explode(" ", $row["dateOfService"], 2);
 				$formattedTime = date("g:iA", strtotime($time));
 				$amountDue = $row["serviceCost"] - $row["amountPaid"];
 				$totalAmountMade += $row['amountPaid'];
+				$totalAmountOwed += $amountDue;
+				$totalServiceCost += $row['serviceCost'];
 				echo "
 					<tr>
-						<td><a href=completedOrders.php?buyerId=".$row["buyerId"].">".$row["buyerName"]."</td>
-						<td><a href=completedOrders.php?date=".$date.">".$date."</td>
-						<td><a href=completedOrders.php?date=".$date."&time=".$time.">".$formattedTime."</td>
-						<td><a href=completedOrders.php?serviceId=".$row["serviceId"].">".$row["serviceName"]."</td>
+						<td><a href=completedOrders.php?buyerId=".$row["buyerId"]." class='text-dark'>".$row["buyerName"]."</td>
+						<td><a href=completedOrders.php?date=".$date." class='text-dark'>".$date."</td>
+						<td><a href=completedOrders.php?date=".$date."&time=".$time." class='text-dark'>".$formattedTime."</td>
+						<td><a href=completedOrders.php?serviceId=".$row["serviceId"]." class='text-dark'>".$row["serviceName"]."</td>
 						<td>".number_format($row["serviceCost"])."</td>
-						<td>".number_format($row["amountPaid"])."</td>
-						<td>".number_format($amountDue)."</td>
+						<td class='text-success'>".number_format($row["amountPaid"])."</td>
+						<td class='text-danger'>".number_format($amountDue)."</td>
 						<td>
 							<form action='#' method='post'>
 								<input type='number' min='0' max='100000000' onkeydown='javascript: return event.keyCode !== 69' class='col-sm-4' name='amount' id='amount' placeholder='Amount' required>
@@ -109,13 +113,13 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 			}
 			echo "
 				<tr>
-					<td><b>Total Amount Made:</b></td>
+					<td><b>Totals:</b></td>
 					<td></td>
 					<td></td>
 					<td></td>
-					<td></td>
-					<td><b>".number_format($totalAmountMade)."</b></td>
-					<td></td>
+					<td><b>".number_format($totalServiceCost)."</b></td>
+					<td class='text-success'><b>".number_format($totalAmountMade)."</b></td>
+					<td class='text-danger'><b>".number_format($totalAmountOwed)."</b></td>
 					<td></td>
 				</tr>";
 		?>

@@ -1,1 +1,8 @@
-[05-Jun-2018 22:45:41 UTC] PHP Warning:  A non-numeric value encountered in /home/rob893/public_html/OtherStuff/CarryManager/Test/index.php on line 44
+[06-Jun-2018 18:32:34 UTC] PHP Fatal error:  Cannot use [] for reading in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 62
+[06-Jun-2018 18:33:34 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 127
+[06-Jun-2018 18:33:34 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 156
+[06-Jun-2018 18:34:35 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 71
+[06-Jun-2018 18:34:35 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 127
+[06-Jun-2018 18:34:35 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 156
+[06-Jun-2018 18:35:10 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 127
+[06-Jun-2018 18:35:10 UTC] PHP Notice:  Array to string conversion in /home/rob893/public_html/OtherStuff/CarryManager/Test/manageRaidersForOrder.php on line 156

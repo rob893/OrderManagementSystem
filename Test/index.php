@@ -127,6 +127,7 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 			<th>Amount Due</th>
 			<th>Paid in Full</th>
 			<th>Partial Payment</th>
+			<th>Manage Group</th>
 			<th>Cancel</th>
 		</tr>
 	</thead>
@@ -134,20 +135,24 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 	<tbody>
 		<?php
 			$totalAmountOwed = 0;
+			$totalAmountPaid = 0;
+			$totalServiceCost = 0;
 			while($row = $sqlOrdersResults->fetch_assoc()){
 				list($date, $time) = explode(" ", $row["dateOfService"], 2);
 				$formattedTime = date("g:iA", strtotime($time));
 				$amountDue = $row["serviceCost"] - $row["amountPaid"];
 				$totalAmountOwed += $amountDue;
+				$totalAmountPaid += $row['amountPaid'];
+				$totalServiceCost += $row['serviceCost'];
 				echo "
 					<tr>
-						<td><a href=index.php?buyerId=".$row["buyerId"].">".$row["buyerName"]."</td>
-						<td><a href=index.php?date=".$date.">".$date."</td>
-						<td><a href=index.php?date=".$date."&time=".$time.">".$formattedTime."</td>
-						<td><a href=index.php?serviceId=".$row["serviceId"].">".$row["serviceName"]."</td>
+						<td><a href=index.php?buyerId=".$row["buyerId"]." class='text-dark'>".$row["buyerName"]."</td>
+						<td><a href=index.php?date=".$date." class='text-dark'>".$date."</td>
+						<td><a href=index.php?date=".$date."&time=".$time." class='text-dark'>".$formattedTime."</td>
+						<td><a href=index.php?serviceId=".$row["serviceId"]." class='text-dark'>".$row["serviceName"]."</td>
 						<td>".number_format($row["serviceCost"])."</td>
-						<td>".number_format($row["amountPaid"])."</td>
-						<td>".number_format($amountDue)."</td>
+						<td class='text-success'>".number_format($row["amountPaid"])."</td>
+						<td class='text-danger'>".number_format($amountDue)."</td>
 						<td>
 							<form action='#' method='post'>
 								<input type='hidden' class='form-control' name='serviceCost' id='serviceCost' value='".$row['serviceCost']."'>
@@ -163,6 +168,13 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 							</form>
 						</td>
 						<td>
+							<form action='manageRaidersForOrder.php' method='get'>
+                                <input type='hidden' name='date' id='date' value='".$date."'>
+                                <input type='hidden' name='time' id='time' value='".$time."'>
+								<button type='submit' class='btn btn-info' name ='orderId' value='".$row['id']."'>Manage Group</button>
+							</form>
+						</td>
+						<td>
 							<form action='#' method='post'>
 								<button type='submit' class='btn btn-danger' name ='cancel' value='".$row['id']."'>Cancel</button>
 							</form>
@@ -171,13 +183,14 @@ $sqlOrdersResults = $conn->query($sqlOrders);
 			}
 			echo "
 				<tr>
-					<td><b>Total Amount Due:</b></td>
+					<td><b>Totals:</b></td>
 					<td></td>
 					<td></td>
 					<td></td>
+					<td><b>".number_format($totalServiceCost)."</b></td>
+					<td class='text-success'><b>".number_format($totalAmountPaid)."</b></td>
+					<td class='text-danger'><b>".number_format($totalAmountOwed)."</b></td>
 					<td></td>
-					<td></td>
-					<td><b>".number_format($totalAmountOwed)."</b></td>
 					<td></td>
 					<td></td>
 					<td></td>

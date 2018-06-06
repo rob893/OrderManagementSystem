@@ -90,7 +90,7 @@ $sqlServicesResults = $conn->query($sqlService);
 			while($row = $sqlServicesResults->fetch_assoc()){
 				echo "
 					<tr>
-						<td>".$row["serviceName"]."</td>
+						<td><a href=serviceProfile.php?serviceId=".$row['id']." class='text-dark'>".$row["serviceName"]."</a></td>
 						<td>".number_format($row["serviceCost"])."</td>
 						<td>
 							<form action='#' method='post'>

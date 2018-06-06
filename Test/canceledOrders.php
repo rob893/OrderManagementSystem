@@ -105,13 +105,13 @@ $sqlCanceledResults = $conn->query($sqlCanceledOrders);
 				$amountDue = $row["serviceCost"] - $row["amountPaid"];
 				echo "
 					<tr>
-						<td><a href=canceledOrders.php?buyerId=".$row["buyerId"].">".$row["buyerName"]."</td>
-						<td><a href=canceledOrders.php?date=".$date.">".$date."</td>
-						<td><a href=canceledOrders.php?date=".$date."&time=".$time.">".$formattedTime."</td>
-						<td><a href=canceledOrders.php?serviceId=".$row["serviceId"].">".$row["serviceName"]."</td>
+						<td><a href=canceledOrders.php?buyerId=".$row["buyerId"]." class='text-dark'>".$row["buyerName"]."</td>
+						<td><a href=canceledOrders.php?date=".$date." class='text-dark'>".$date."</td>
+						<td><a href=canceledOrders.php?date=".$date."&time=".$time." class='text-dark'>".$formattedTime."</td>
+						<td><a href=canceledOrders.php?serviceId=".$row["serviceId"]." class='text-dark'>".$row["serviceName"]."</td>
 						<td>".number_format($row["serviceCost"])."</td>
-						<td>".number_format($row["amountPaid"])."</td>
-						<td>".number_format($amountDue)."</td>
+						<td class='text-success'>".number_format($row["amountPaid"])."</td>
+						<td class='text-danger'>".number_format($amountDue)."</td>
 						<td>
 							<form action='#' method='post'>
 								<button type='submit' class='btn btn-danger' name ='delete' value='".$row['id']."'>Delete</button>
