@@ -65,10 +65,9 @@ else if(isset($_GET['logId'])){
 	foreach($data['friendlies'] as $friendly){
 		if(!($friendly['type'] == 'NPC' || $friendly['type'] == 'Pet')){
 			foreach($fights as $fightId => $bossName){
-				$numParticipants = 0;
+				$playersInCarryFights[$fightId]['NumParticipants'] = 0;
 				foreach($friendly['fights'] as $fightParticipated){
 					if($fightParticipated['id'] == $fightId){
-						$playersInCarryFights[$fightId]['NumParticipant'] = $numParticipants;
 						$playersInCarryFights[$fightId]['BossName'] = $bossName;
 						$playersInCarryFights[$fightId]['Participants'][$friendly['name']] = $friendly['type'];
 					}
@@ -78,11 +77,7 @@ else if(isset($_GET['logId'])){
 	}
 	foreach($playersInCarryFights as $fightId => $fight){
 		foreach($fight['Participants'] as $player){
-			if(!isset($playersInCarryFights[$fightId]['NumParticipants'])){
-				$playersInCarryFights[$fightId]['NumParticipants'] = 1;
-			} else {
-				$playersInCarryFights[$fightId]['NumParticipants']++;
-			}
+			$playersInCarryFights[$fightId]['NumParticipants']++;
 		}
 	}
 	
@@ -91,29 +86,37 @@ else if(isset($_GET['logId'])){
 	$masterTable = [];
 	foreach($playersInCarryFights as $fight){
 		foreach($fight['Participants'] as $player => $class){
-			$masterTable[$player]['amountOwed'] = 0;
-			if(!isset($masterTable[$player][$fight['BossName']])){
-				$masterTable[$player][$fight['BossName']] = 1;
+			
+			if(!isset($masterTable[$player]['FightsInOn'][$fight['BossName']])){
+				$masterTable[$player]['FightsInOn'][$fight['BossName']] = 1;
 			} else {
-				$masterTable[$player][$fight['BossName']]++;
+				$masterTable[$player]['FightsInOn'][$fight['BossName']]++;
+				echo 'asdfasdf';
+			}
+			if(!isset($masterTable[$player]['amountOwed'])){
+				$masterTable[$player]['amountOwed'] = 0;
 			}
 			if($fight['BossName'] == "Gul'dan"){
-				$masterTable[$player]['amountOwed'] += 800000;
+				$masterTable[$player]['amountOwed'] += (800000 / $fight['NumParticipants']) / 2;
 			}
 			else if($fight['BossName'] == "Argus the Unmaker"){
-				$masterTable[$player]['amountOwed'] += 100000;
+				$masterTable[$player]['amountOwed'] += (100000 / $fight['NumParticipants']) / 2;
 			}
+			$masterTable[$player]['class'] = $class;
 		}
 	}
-	//echo '<pre>';
-	//print_r($masterTable);
-	//print_r($playersInCarryFights);
-	//print_r($data);
-	//echo '</pre>';
+	
+	// echo '<pre>';
+	// print_r($masterTable);
+	// //print_r($playersInCarryFights);
+	// //print_r($data);
+	// echo '</pre>';
 	
 	?>
 	<h2>Players Participating in Sales Fights:</h2>
 	<h3>Master Table</h3>
+	<p><b>NOTE: these numbers are calculated including the buyers so they are not correct yet. I still need to figure out a way to remove the buyers</b></p>
+	<p><b>Amount owed to guild:</b> <?php echo number_format($guildCut); ?></p>
 	<table class='table table-striped table-responsive'>
 		<thead>
 			<tr>
@@ -125,23 +128,18 @@ else if(isset($_GET['logId'])){
 		
 		<tbody>
 			<?php
-				foreach($masterTable as $player => $bosses){
-					//$color = GetClassColor($class);
+				foreach($masterTable as $player => $playerData){
+					$color = GetClassColor($playerData['class']);
 					echo "
 						<tr>
-							<td>".$player."</td>
+							<td><font color='".$color."'>".$player."</font></td>
 							<td>";
-								foreach($bosses as $boss => $numberKilled){
-									if($boss == 'amountOwed'){ //sloppy
-										//do nothing
-									} 
-									else {
-										echo $boss." x".$numberKilled."<br>";
-									}
+								foreach($playerData['FightsInOn'] as $boss => $numberKilled){
+									echo $boss." x".$numberKilled."<br>";
 								}			
 					echo "
 							</td>
-							<td>WIP ".$bosses['amountOwed']."</td>
+							<td>".number_format($playerData['amountOwed'])."</td>
 						</tr>";
 				}
 			?>
