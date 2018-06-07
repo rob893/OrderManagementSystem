@@ -91,7 +91,6 @@ else if(isset($_GET['logId'])){
 				$masterTable[$player]['FightsInOn'][$fight['BossName']] = 1;
 			} else {
 				$masterTable[$player]['FightsInOn'][$fight['BossName']]++;
-				echo 'asdfasdf';
 			}
 			if(!isset($masterTable[$player]['amountOwed'])){
 				$masterTable[$player]['amountOwed'] = 0;
@@ -115,7 +114,8 @@ else if(isset($_GET['logId'])){
 	?>
 	<h2>Players Participating in Sales Fights:</h2>
 	<h3>Master Table</h3>
-	<p><b>NOTE: these numbers are calculated including the buyers so they are not correct yet. I still need to figure out a way to remove the buyers</b></p>
+	<p><b>NOTE: these numbers are calculated including the buyers so they are not correct yet. I still need to figure out a way to remove the buyers.
+		Also, it is not computing more than 1 buyer per run (so if there are 5 buyers for 1 argus fight, the computer thinks we are only getting 100k instead of 500k for that fight). Need to fix that<br></b></p>
 	<p><b>Amount owed to guild:</b> <?php echo number_format($guildCut); ?></p>
 	<table class='table table-striped table-responsive'>
 		<thead>
