@@ -54,10 +54,10 @@ $sqlBuyersResults = $conn->query($sqlBuyers);
 			<select class='form-control' id='buyer' name='buyer' required>
 				<?php
 				while($row = $sqlBuyersResults->fetch_assoc()){
-					$$raiderName = $row['buyerName'];
+					$buyerName = $row['buyerName'];
 					$buyerId = $row['id'];
 					echo "
-						<option value='".$buyerId."'>".$$raiderName."</option>
+						<option value='".$buyerId."'>".$buyerName."</option>
 					";
 				}
 				?>
