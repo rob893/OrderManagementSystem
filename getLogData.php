@@ -138,7 +138,7 @@ else if(isset($_GET['logId'])){
 	}
 	
 	
-	  //echo '<pre>';
+	//  echo '<pre>';
 	 // print_r($altsInFight);
 	 //print_r($numCarriesPerBoss);
 	 // print_r($playersInCarryFights);

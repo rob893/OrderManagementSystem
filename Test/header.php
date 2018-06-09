@@ -2,6 +2,8 @@
 //ini_set('display_errors', true);
 require_once('dbconnection.php');
 require_once('helperFunctions.php');
+
+date_default_timezone_set('EST');
 ?>
 
 <!DOCTYPE html>

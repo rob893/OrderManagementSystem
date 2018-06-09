@@ -1,6 +1,9 @@
 <?php
 //ini_set('display_errors', true);
 require_once('dbconnection.php');
+require_once('helperFunctions.php');
+
+date_default_timezone_set('EST');
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +39,9 @@ require_once('dbconnection.php');
 					<a href="canceledOrders.php" class='nav-item nav-link'>Canceled Orders</a>
 					<a href="services.php" class='nav-item nav-link'>Add Service</a>
 					<a href="addBuyer.php" class='nav-item nav-link'>Add Buyer</a>
+					<a href="addRaider.php" class='nav-item nav-link'>Add Raider</a>
 					<a href="addOrder.php" class='nav-item nav-link'>Add Order</a>
+					<a href="getLogData.php" class='nav-item nav-link'>Logs</a>
 				</div>
 			</div>
 		</nav>
