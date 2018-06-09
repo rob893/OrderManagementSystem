@@ -40,27 +40,34 @@ if(isset($_GET['date'])){
 
 else if(isset($_GET['logId'])){
 	$logId = $_GET['logId'];
-
 	$logsLink = 'https://www.warcraftlogs.com/v1/report/fights/'.$logId.'?api_key='.$apiKey;
-	
-	$totalAmountMade = 0;
 	$data = json_decode(file_get_contents($logsLink), true);
+	
+	$sqlGuildMembers = 'SELECT raiderName, class FROM raider';
+	$guildMembersResults = $conn->query($sqlGuildMembers);
+	
+	$guildMembers = [];
+	while($row = $guildMembersResults->fetch_assoc()){
+		$guildMembers[$row['raiderName']] = $row['class'];
+	}
+	
+	$sqlAlts = 'SELECT * FROM raider WHERE mainName IS NOT NULL';
+	$altsResults = $conn->query($sqlAlts);
+	
+	$alts = [];
+	while($row = $altsResults->fetch_assoc()){
+		$alts[$row['raiderName']] = $row['mainName']; 
+	}
+	
 	$fights = [];
 	foreach($data['fights'] as $fight){
 		if((isset($fight['kill']) && $fight['kill'] == 1) && (($fight['difficulty'] == 5 && $fight['name'] == "Gul'dan") || ($fight['difficulty'] == 4 && $fight['name'] == "Argus the Unmaker"))){
 			$fights[$fight['id']] = $fight['name'];
-			if($fight['name'] == "Gul'dan"){
-				$totalAmountMade += 800000;
-			}
-			else if($fight['name'] == "Argus the Unmaker"){
-				$totalAmountMade += 100000;
-			}
 		}
 	}
 	
-	$guildCut = $totalAmountMade / 2;
-	
-	
+	$totalAmountMade = 0;
+	$numCarriesPerBoss = [];
 	$playersInCarryFights = [];
 	foreach($data['friendlies'] as $friendly){
 		if(!($friendly['type'] == 'NPC' || $friendly['type'] == 'Pet')){
@@ -68,8 +75,23 @@ else if(isset($_GET['logId'])){
 				$playersInCarryFights[$fightId]['NumParticipants'] = 0;
 				foreach($friendly['fights'] as $fightParticipated){
 					if($fightParticipated['id'] == $fightId){
-						$playersInCarryFights[$fightId]['BossName'] = $bossName;
-						$playersInCarryFights[$fightId]['Participants'][$friendly['name']] = $friendly['type'];
+						if(array_key_exists($friendly['name'], $guildMembers)){
+							$playersInCarryFights[$fightId]['BossName'] = $bossName;
+							$playersInCarryFights[$fightId]['Participants'][$friendly['name']] = $friendly['type'];
+						}
+						else { //is carry
+							if(!isset($numCarriesPerBoss[$fightId])){
+								if($bossName == "Gul'dan"){
+									$totalAmountMade += 800000;
+								}
+								else if($bossName == "Argus the Unmaker"){
+									$totalAmountMade += 100000;
+								}
+								$numCarriesPerBoss[$fightId][$bossName] = 1;
+							} else {
+								$numCarriesPerBoss[$fightId][$bossName]++;
+							}
+						}
 					}
 				}
 			}
@@ -81,11 +103,19 @@ else if(isset($_GET['logId'])){
 		}
 	}
 	
-	
+	$guildCut = $totalAmountMade / 2;
 	
 	$masterTable = [];
-	foreach($playersInCarryFights as $fight){
+	$altsInFight = [];
+	foreach($playersInCarryFights as $fightId => $fight){
 		foreach($fight['Participants'] as $player => $class){
+			
+			if(array_key_exists($player, $alts)){
+				$altsInFight[$alts[$player]][$player]['FightsInOn'][] = $fight['BossName'];
+				$altsInFight[$alts[$player]][$player]['class'] = $class;
+				$player = $alts[$player];
+				$class = $guildMembers[$player];
+			}
 			
 			if(!isset($masterTable[$player]['FightsInOn'][$fight['BossName']])){
 				$masterTable[$player]['FightsInOn'][$fight['BossName']] = 1;
@@ -96,31 +126,31 @@ else if(isset($_GET['logId'])){
 				$masterTable[$player]['amountOwed'] = 0;
 			}
 			if($fight['BossName'] == "Gul'dan"){
-				$masterTable[$player]['amountOwed'] += (800000 / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwed'] += ((800000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
 			}
 			else if($fight['BossName'] == "Argus the Unmaker"){
-				$masterTable[$player]['amountOwed'] += (100000 / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwed'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
 			}
 			$masterTable[$player]['class'] = $class;
 		}
 	}
 	
-	// echo '<pre>';
-	// print_r($masterTable);
-	// //print_r($playersInCarryFights);
-	// //print_r($data);
-	// echo '</pre>';
+	  // echo '<pre>';
+	  // print_r($altsInFight);
+	 // // print_r($numCarriesPerBoss);
+	 // // print_r($playersInCarryFights);
+	// // // //print_r($data);
+	  // echo '</pre>';
 	
 	?>
 	<h2>Players Participating in Sales Fights:</h2>
 	<h3>Master Table</h3>
-	<p><b>NOTE: these numbers are calculated including the buyers so they are not correct yet. I still need to figure out a way to remove the buyers.
-		Also, it is not computing more than 1 buyer per run (so if there are 5 buyers for 1 argus fight, the computer thinks we are only getting 100k instead of 500k for that fight). Need to fix that<br></b></p>
 	<p><b>Amount owed to guild:</b> <?php echo number_format($guildCut); ?></p>
 	<table class='table table-striped table-responsive'>
 		<thead>
 			<tr>
 				<th>Participants</th>
+				<th>Alts</th>
 				<th>Bosses In On</th>
 				<th>Amount Owed To Raider</th>
 			</tr>
@@ -133,6 +163,17 @@ else if(isset($_GET['logId'])){
 					echo "
 						<tr>
 							<td><font color='".$color."'>".$player."</font></td>
+							<td>";
+								if(array_key_exists($player, $altsInFight)){
+									foreach($altsInFight[$player] as $altName => $altInfo){
+										$altColor = GetClassColor($altInfo['class']);
+										echo "<font color='".$altColor."'>".$altName."</font>";
+									}
+								} else {
+									echo "none";
+								}
+					echo "
+							</td>
 							<td>";
 								foreach($playerData['FightsInOn'] as $boss => $numberKilled){
 									echo $boss." x".$numberKilled."<br>";

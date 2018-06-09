@@ -32,10 +32,10 @@ function GetClassColor($class){
             $color = '#F58CBA';
             break;
         case "Priest":
-            $color = '#FFFFFF';
+            $color = '#7E7E7E';
             break;
         case "Rogue":
-            $color = '#FFF569';
+            $color = '#FFDD08';
             break;
         case "Shaman":
             $color = '#0070DE';
@@ -51,5 +51,48 @@ function GetClassColor($class){
     return $color;
 }
 
+function GetClassNameFromId($classId){
+	$className = 'Unknown';
+    switch ($classId){
+        case 1:
+            $className = 'Warrior';
+            break;
+        case 2:
+            $className = 'Paladin';
+            break;
+        case 3:
+            $className = 'Hunter';
+            break;
+        case 4:
+            $className = 'Rogue';
+            break;
+        case 5:
+            $className = 'Priest';
+            break;
+        case 6:
+            $className = 'Death Knight';
+            break;
+        case 7:
+            $className = 'Shaman';
+            break;
+        case 8:
+            $className = 'Mage';
+            break;
+        case 9:
+            $className = 'Warlock';
+            break;
+        case 10:
+            $className = 'Monk';
+            break;
+        case 11:
+            $className = 'Druid';
+            break;
+        case 12:
+            $className = 'Demon Hunter';
+            break;
+    }
+    
+    return $className;
+}
 
 ?>
