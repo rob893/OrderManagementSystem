@@ -81,15 +81,15 @@ else if(isset($_GET['logId'])){
 						}
 						else { //is carry
 							if(!isset($numCarriesPerBoss[$fightId])){
-								if($bossName == "Gul'dan"){
-									$totalAmountMade += 800000;
-								}
-								else if($bossName == "Argus the Unmaker"){
-									$totalAmountMade += 100000;
-								}
 								$numCarriesPerBoss[$fightId][$bossName] = 1;
 							} else {
 								$numCarriesPerBoss[$fightId][$bossName]++;
+							}
+							if($bossName == "Gul'dan"){
+								$totalAmountMade += 800000;
+							}
+							else if($bossName == "Argus the Unmaker"){
+								$totalAmountMade += 100000;
 							}
 						}
 					}
@@ -135,12 +135,12 @@ else if(isset($_GET['logId'])){
 		}
 	}
 	
-	  // echo '<pre>';
-	  // print_r($altsInFight);
-	 // // print_r($numCarriesPerBoss);
-	 // // print_r($playersInCarryFights);
-	// // // //print_r($data);
-	  // echo '</pre>';
+	  echo '<pre>';
+	 // print_r($altsInFight);
+	 //print_r($numCarriesPerBoss);
+	 // print_r($playersInCarryFights);
+	//print_r($data);
+	  echo '</pre>';
 	
 	?>
 	<h2>Players Participating in Sales Fights:</h2>
