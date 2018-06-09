@@ -48,3 +48,6 @@ date_default_timezone_set('EST');
 		<br>
 		<br>
 		<div class="container-fluid">
+			<div class="alert alert-danger" role="alert">
+				THIS IS THE TEST ENVIRONMENT! <br> IF YOU ARE PUTTING IN REAL INFO, DO IT ON THE <a href="../index.php">LIVE</a> VERSION UNLESS YOU WANT TO TEST STUFF!
+			</div>

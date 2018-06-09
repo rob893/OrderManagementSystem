@@ -9,7 +9,7 @@ foreach($data['members'] as $index => $characterInfo){
 	$characterName = $characterInfo['character']['name'];
 	$class = GetClassNameFromId($characterInfo['character']['class']);
 	
-	$sqlInsert = $conn->prepare('INSERT INTO raider (raiderName, class) VALUES (?, ?)');
+	$sqlInsert = $conn->prepare('INSERT IGNORE INTO raider (raiderName, class) VALUES (?, ?)');
 	$sqlInsert->bind_param('ss', $characterName, $class);
 	$sqlInsert->execute();
 }

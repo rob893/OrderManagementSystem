@@ -127,11 +127,16 @@ else if(isset($_GET['logId'])){
 			if(!isset($masterTable[$player]['amountOwed'])){
 				$masterTable[$player]['amountOwed'] = 0;
 			}
+			if(!isset($masterTable[$player]['amountOwedMinusLaatu'])){
+				$masterTable[$player]['amountOwedMinusLaatu'] = 0;
+			}
 			if($fight['BossName'] == "Gul'dan"){
 				$masterTable[$player]['amountOwed'] += ((800000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwedMinusLaatu'] += ((800000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
 			}
 			else if($fight['BossName'] == "Argus the Unmaker"){
 				$masterTable[$player]['amountOwed'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwedMinusLaatu'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
 			}
 			$masterTable[$player]['class'] = $class;
 		}
@@ -161,6 +166,7 @@ else if(isset($_GET['logId'])){
 				<th>Alts</th>
 				<th>Bosses In On</th>
 				<th>Amount Owed To Raider</th>
+				<th>Amount Owed if<br>Laatu Doesn't Want His Cut</th>
 			</tr>
 		</thead>
 		
@@ -189,6 +195,7 @@ else if(isset($_GET['logId'])){
 					echo "
 							</td>
 							<td>".number_format($playerData['amountOwed'])."</td>
+							<td>".number_format($playerData['amountOwedMinusLaatu'])."</td>
 						</tr>";
 				}
 			?>
