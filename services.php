@@ -17,6 +17,23 @@ if(isset($_POST['delete'])){
 	}
 }
 
+if(isset($_POST['update'])){
+	
+	$serviceId = $_POST['update'];
+	$newServiceCost = $_POST['newServiceCost'];
+	$sqlInsert = $conn->prepare("UPDATE services SET serviceCost = ? WHERE id = ?");
+	$sqlInsert->bind_param('ii', $newServiceCost, $serviceId);
+	//End 'filtering'
+	
+	if($sqlInsert->execute() === true){
+		echo "<script type='text/javascript'>alert('Success!')</script>";
+		$sqlInsert->close();
+	} else {
+		echo "<script type='text/javascript'>alert('Error: ".$sqlInsert->error."')</script>";
+		$sqlInsert->close();
+	}
+}
+
 if(isset($_POST['addService'])){
 	
 	//The following takes the POST data and 'filters' it before inserting into the database to prevent SQL injection attacks. 
@@ -81,6 +98,7 @@ $sqlServicesResults = $conn->query($sqlService);
 		<tr>
 			<th>Service</th>
 			<th>Cost</th>
+			<th>Update Cost</th>
 			<th>Delete</th>
 		</tr>
 	</thead>
@@ -92,6 +110,12 @@ $sqlServicesResults = $conn->query($sqlService);
 					<tr>
 						<td><a href=serviceProfile.php?serviceId=".$row['id']." class='text-dark'>".$row["serviceName"]."</a></td>
 						<td>".number_format($row["serviceCost"])."</td>
+						<td>
+							<form action='#' method='post'>
+								<input type='number' min='0' max='100000000' onkeydown='javascript: return event.keyCode !== 69' class='col-sm-2' name='newServiceCost' id='newServiceCost' placeholder='Cost' required>
+								<button type='submit' class='btn btn-info' name ='update' value='".$row['id']."'>Update Cost</button>
+							</form>
+						</td>
 						<td>
 							<form action='#' method='post'>
 								<button type='submit' class='btn btn-danger' name ='delete' value='".$row['id']."'>Delete</button>

@@ -91,7 +91,7 @@ else if(isset($_GET['logId'])){
 								$totalAmountMade += 800000;
 							}
 							else if($bossName == "Argus the Unmaker"){
-								$totalAmountMade += 100000;
+								$totalAmountMade += 75000;
 							}
 						}
 					}
@@ -135,8 +135,8 @@ else if(isset($_GET['logId'])){
 				$masterTable[$player]['amountOwedMinusLaatu'] += ((800000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
 			}
 			else if($fight['BossName'] == "Argus the Unmaker"){
-				$masterTable[$player]['amountOwed'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
-				$masterTable[$player]['amountOwedMinusLaatu'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
+				$masterTable[$player]['amountOwed'] += ((75000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwedMinusLaatu'] += ((75000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
 			}
 			$masterTable[$player]['class'] = $class;
 		}

@@ -60,9 +60,12 @@ while($row = $raidersResults->fetch_assoc()){
 <div id="addRaider" class="collapse">
 	<form action='#' method='post' enctype='multipart/form-data'>
 		<div class='row'>
-			<div class='col-sm-2'>
+			<div class='col-sm-3'>
 				<div class='form-group'>
 					<br>
+					<div class="alert alert-danger" role="alert">
+						Raider name must match name in game completely (including special characters) to work with logs!
+					</div>
 					<label for='name'>Raider Name:</label>
 					<input type='text' class='form-control' name='name' id='name' placeholder='Name' required>
 					<br>

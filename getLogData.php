@@ -83,15 +83,17 @@ else if(isset($_GET['logId'])){
 						}
 						else { //is carry
 							if(!isset($numCarriesPerBoss[$fightId])){
-								$numCarriesPerBoss[$fightId][$bossName] = 1;
+								$numCarriesPerBoss[$fightId]['NumberOfCarries'] = 1;
 							} else {
-								$numCarriesPerBoss[$fightId][$bossName]++;
+								$numCarriesPerBoss[$fightId]['NumberOfCarries']++;
 							}
+							$numCarriesPerBoss[$fightId]['BossName'] = $bossName;
+							$numCarriesPerBoss[$fightId]['Carries'][$friendly['name']] = $friendly['type'];
 							if($bossName == "Gul'dan"){
 								$totalAmountMade += 800000;
 							}
 							else if($bossName == "Argus the Unmaker"){
-								$totalAmountMade += 100000;
+								$totalAmountMade += 75000;
 							}
 						}
 					}
@@ -131,19 +133,19 @@ else if(isset($_GET['logId'])){
 				$masterTable[$player]['amountOwedMinusLaatu'] = 0;
 			}
 			if($fight['BossName'] == "Gul'dan"){
-				$masterTable[$player]['amountOwed'] += ((800000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
-				$masterTable[$player]['amountOwedMinusLaatu'] += ((800000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
+				$masterTable[$player]['amountOwed'] += ((800000 * $numCarriesPerBoss[$fightId]['NumberOfCarries']) / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwedMinusLaatu'] += ((800000 * $numCarriesPerBoss[$fightId]['NumberOfCarries']) / ($fight['NumParticipants'] - 1)) / 2;
 			}
 			else if($fight['BossName'] == "Argus the Unmaker"){
-				$masterTable[$player]['amountOwed'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / $fight['NumParticipants']) / 2;
-				$masterTable[$player]['amountOwedMinusLaatu'] += ((100000 * $numCarriesPerBoss[$fightId][$fight['BossName']]) / ($fight['NumParticipants'] - 1)) / 2;
+				$masterTable[$player]['amountOwed'] += ((75000 * $numCarriesPerBoss[$fightId]['NumberOfCarries']) / $fight['NumParticipants']) / 2;
+				$masterTable[$player]['amountOwedMinusLaatu'] += ((75000 * $numCarriesPerBoss[$fightId]['NumberOfCarries']) / ($fight['NumParticipants'] - 1)) / 2;
 			}
 			$masterTable[$player]['class'] = $class;
 		}
 	}
 	
 	
-	  //echo '<pre>';
+	 // echo '<pre>';
 	 // print_r($altsInFight);
 	 //print_r($numCarriesPerBoss);
 	 // print_r($playersInCarryFights);
@@ -157,7 +159,32 @@ else if(isset($_GET['logId'])){
 		<b>Owner of Log: </b><?php echo $data['owner']; ?><br>
 		<b>Date of Log: </b><?php echo date("d F Y", $data['start'] / 1000); ?>
 	</p>
-	<h3>Master Table</h3>
+	<h3>Buyers for the Night:</h3>
+	<div class='row'>
+		<div class='col-sm-4'>
+			<div class="alert alert-danger" role="alert">
+				If someone is listed here that is not a buyer, then they need to <a href='addRaider.php'>add</a> their character to the database! Copy and paste their name if there are special characters in it as it has to match completely.
+			</div>
+		</div>
+	</div>
+	<p>
+		<?php
+			foreach($numCarriesPerBoss as $fightId => $bossInfo){
+				echo "
+					<b>Boss: ".$bossInfo['BossName']."</b><br>
+				";
+				
+				foreach($bossInfo['Carries'] as $carryName => $class){
+					$color = GetClassColor($class);
+					echo "
+						<font color='".$color."'>".$carryName."</font><br>
+					";
+				}
+				echo "<br>";
+			}
+		?>
+	</p>
+	<h2>Participants for the Night</h2>
 	<p><b>Amount owed to guild:</b> <?php echo number_format($guildCut); ?></p>
 	<table class='table table-striped table-responsive'>
 		<thead>
@@ -201,7 +228,9 @@ else if(isset($_GET['logId'])){
 			?>
 		</tbody>
 	</table>
-		
+	
+	<br>
+	<h2>Participants per Fight</h2>
 	<?php
 	foreach($playersInCarryFights as $fight){
 		echo "<h3>".$fight['BossName']."</h3>";
@@ -227,6 +256,7 @@ else if(isset($_GET['logId'])){
 				?>
 			</tbody>
 		</table>
+		<br>
 		
 		<?php
 	}
