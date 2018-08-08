@@ -13,6 +13,15 @@ if(isset($_GET['date'])){
 	
 	?>
 	<h3>Select log</h3>
+	
+	<?php
+		if($data == null){
+			echo "No results.";
+			require_once('footer.php');
+			exit;
+		}
+	?>
+	
 	<form action='#' method='post' enctype='multipart/form-data'>
 	<table class='table table-striped table-responsive'>
 		<thead>
